@@ -16,8 +16,7 @@ const test_input =
   \\
 ;
 
-pub fn part1(allocator: Allocator) !i32 {
-  _ = allocator;
+pub fn part1() !i32 {
   var file = try std.fs.cwd().openFile("./src/01.txt", .{ .mode = .read_only });
   defer file.close();
 
@@ -98,8 +97,7 @@ test "part2" {
   try std.testing.expectEqual(6, result);
 }
 
-pub fn part2(allocator: Allocator) !i32 {
-  _ = allocator;
+pub fn part2() !i32 {
   var file = try std.fs.cwd().openFile("./src/01.txt", .{ .mode = .read_only });
   defer file.close();
 
