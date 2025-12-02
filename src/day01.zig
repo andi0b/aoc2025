@@ -1,5 +1,4 @@
 const std = @import("std");
-const Allocator = std.mem.Allocator;
 const Reader = std.Io.Reader;
 
 const test_input = 
@@ -16,14 +15,11 @@ const test_input =
   \\
 ;
 
-pub fn part1() !i32 {
-  var file = try std.fs.cwd().openFile("./src/01.txt", .{ .mode = .read_only });
-  defer file.close();
+const real_input = @embedFile("01.txt");
 
-  var read_buffer : [1024]u8 = undefined;
-  var file_reader = file.readerStreaming(&read_buffer);
-  const reader_interface: *Reader = &file_reader.interface;
-  return part1_reader(reader_interface);
+pub fn part1() !i32 {
+  var reader = std.Io.Reader.fixed(real_input);
+  return part1_reader(&reader);
 }
 
 test "part1" {
@@ -98,15 +94,9 @@ test "part2" {
 }
 
 pub fn part2() !i32 {
-  var file = try std.fs.cwd().openFile("./src/01.txt", .{ .mode = .read_only });
-  defer file.close();
-
-  var read_buffer : [1024]u8 = undefined;
-  var file_reader = file.readerStreaming(&read_buffer);
-  const reader_interface: *Reader = &file_reader.interface;
-  return part2_reader(reader_interface);
+  var reader = std.Io.Reader.fixed(real_input);
+  return part2_reader(&reader);
 }
-
 
 const StepByStepResult = struct {
   pos: i32,
