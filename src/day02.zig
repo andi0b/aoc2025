@@ -19,7 +19,7 @@ fn part1_text(input: []const u8) !i64 {
 
   while (try reader.takeDelimiter(',')) |range_text| {
     const range = try Range.init_from_string(range_text);
-    for (range.start..range.stop+1) |id| {
+    for (@intCast(range.start)..@intCast(range.stop+1)) |id| {
       if (try is_invalid_id(@intCast(id))) {
         invalid += @intCast(id);
       }
@@ -78,7 +78,7 @@ fn part2_text(input: []const u8) !i64 {
 
   while (try reader.takeDelimiter(',')) |range_text| {
     const range = try Range.init_from_string(range_text);
-    for (range.start..range.stop+1) |id| {
+    for (@intCast(range.start)..@intCast(range.stop+1)) |id| {
       if (try is_invalid_id_2(@intCast(id))) {
         invalid += @intCast(id);
       }
