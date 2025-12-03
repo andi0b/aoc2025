@@ -7,21 +7,9 @@
   </body>
 
   <script>
-    const funcs = [
-      'day1_part1', 'day1_part2',
-      'day2_part1', 'day2_part2',
-      'day3_part1', 'day3_part2',
-    ]
-
-    let wasm
-    const loadWasm = async (file, imports) => WebAssembly.instantiateStreaming(fetch(file), { env: imports })
-    loadWasm('wasm.wasm', {}).then(r => wasm = r)
-
-    const run = (func) => wasm.instance.exports[func]()
-
     const c = document.getElementById('c')
 
-    for (let f of funcs) {
+    const createItem = (name, f) => {
       const d = document.createElement('div')
       c.appendChild(d)
 
@@ -30,13 +18,24 @@
       d.appendChild(l)
 
       const b = document.createElement('button')
-      b.innerText = f
+      b.innerText = name
       d.appendChild(b)
 
       const r = document.createElement('input')
       d.appendChild(r)
 
-      b.onclick = async _ => r.value = await run(f)
+      b.onclick = async _ => r.value = await f()
     }
+
+    const loadWasm = async (file, imports) => WebAssembly.instantiateStreaming(fetch(file), { env: imports })
+
+    loadWasm('wasm.wasm', {}).then(wasm => {
+      for (let prop in wasm.instance.exports) {
+        const f = wasm.instance.exports[prop]
+        if (typeof f === 'function') {
+          createItem(prop, f)
+        }
+      }
+    })
   </script>
 </html>
