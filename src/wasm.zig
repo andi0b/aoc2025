@@ -18,3 +18,6 @@ export fn day2_part2() i64 {
 export fn day3_part1() i64 {
   return day3.part1() catch -1;
 }
+export fn day3_part2() i64 {
+  return day3.part2() catch -1;
+}
