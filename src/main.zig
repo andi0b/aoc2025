@@ -3,6 +3,7 @@ const print = std.log.info;
 const day1 = @import("day01.zig");
 const day2 = @import("day02.zig");
 const day3 = @import("day03.zig");
+const day4 = @import("day04.zig");
 
 pub fn main() !void {
   print("day1 part1: {}", .{try day1.part1()});
@@ -13,4 +14,9 @@ pub fn main() !void {
 
   print("day3 part1: {}", .{try day3.part1()});
   print("day3 part2: {}", .{try day3.part2()});
+
+  var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+  defer _ = gpa.deinit();
+
+  print("day4 part1: {}", .{try day4.part1(gpa.allocator())});
 }
