@@ -4,6 +4,7 @@ const day1 = @import("day01.zig");
 const day2 = @import("day02.zig");
 const day3 = @import("day03.zig");
 const day4 = @import("day04.zig");
+const day5 = @import("day05.zig");
 
 pub fn main() !void {
   print("day1 part1: {}", .{try day1.part1()});
@@ -20,4 +21,6 @@ pub fn main() !void {
 
   print("day4 part1: {}", .{try day4.part1(gpa.allocator())});
   print("day4 part2: {}", .{try day4.part2(gpa.allocator())});
+
+  print("day5 part1: {}", .{try day5.part1(gpa.allocator())});
 }
