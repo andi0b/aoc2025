@@ -42,6 +42,16 @@ const Range = struct {
   pub fn isInRange(self: *const Self, n: u64) bool {
     return self.start <= n and self.end >= n;
   }
+
+  pub fn merge(self: *Self, other: *const Self) bool {
+    if (self.end < other.start or other.end < self.start) {
+      return false;
+    } else {
+      self.start = @min(self.start, other.start);
+      self.end = @max(self.end, other.end);
+      return true;
+    }
+  }
 };
 
 test "part1" {
@@ -88,3 +98,48 @@ fn part1_text(input: []const u8, allocator: Allocator) !u64 {
   return valid_count;
 }
 
+pub fn part2(allocator: Allocator) !u64 {
+  return part2_text(real_input, allocator);
+}
+
+test "part2" {
+  const result = try part2_text(test_input, std.testing.allocator);
+  try expectEql(14, result);
+}
+
+fn part2_text(input: []const u8, allocator: Allocator) !u64 {
+
+  // create a list of disjunct ranges
+  // by checking if a range overlaps with other ranges
+  // if so, merge them and remove the merged range
+  var range_list = std.ArrayList(Range).empty;
+  defer range_list.deinit(allocator);
+
+  var reader = std.Io.Reader.fixed(input);
+  while (try reader.takeDelimiter('\n')) |line| {
+    if (line.len > 0) {
+      var range = try Range.init_from_line(line);
+      var check_for_overlap = true;
+      while (check_for_overlap) {
+        check_for_overlap = false;
+        for (range_list.items, 0..)|other, i| {
+          if (range.merge(&other)) {
+            _ = range_list.orderedRemove(i);
+            check_for_overlap = true;
+            break;
+          }
+        }
+      }
+      try range_list.append(allocator, range);
+    } else {
+      break;
+    }
+  }
+
+  // calculate the total items of all ranges
+  var total: u64 = 0;
+  for (range_list.items) |range| {
+    total += range.end - range.start+1;
+  }
+  return total;
+}
