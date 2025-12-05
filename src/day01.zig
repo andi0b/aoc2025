@@ -18,13 +18,11 @@ const test_input =
 const real_input = @embedFile("01.txt");
 
 pub fn part1() !i32 {
-  var reader = std.Io.Reader.fixed(real_input);
-  return part1_reader(&reader);
+  return part1_text(real_input);
 }
 
 test "part1" {
-  var reader = std.Io.Reader.fixed(test_input);
-  const result = try part1_reader(&reader);
+  const result = try part1_text(test_input);
   try std.testing.expectEqual(3, result);
 }
 
@@ -69,7 +67,9 @@ fn move_dial(pos: i32, instruction: Instruction) i32 {
   return @mod(new_pos, 100);
 }
 
-fn part1_reader(reader: *std.Io.Reader) !i32 {
+fn part1_text(input: []const u8) !i32 {
+
+  var reader = std.Io.Reader.fixed(input);
 
   var result: i32 = 0;
   var pos: i32 = 50;
@@ -88,14 +88,12 @@ fn part1_reader(reader: *std.Io.Reader) !i32 {
 }
 
 test "part2" {
-  var reader = std.Io.Reader.fixed(test_input);
-  const result = try part2_reader(&reader);
+  const result = try part2_text(test_input);
   try std.testing.expectEqual(6, result);
 }
 
 pub fn part2() !i32 {
-  var reader = std.Io.Reader.fixed(real_input);
-  return part2_reader(&reader);
+  return part2_text(real_input);
 }
 
 const StepByStepResult = struct {
@@ -117,7 +115,9 @@ fn move_dial_step_by_step(pos: i32, instruction: Instruction) StepByStepResult {
   return .{ .inc = r, .pos = p };
 }
 
-fn part2_reader(reader: *std.Io.Reader) !i32 {
+fn part2_text(input: []const u8) !i32 {
+
+  var reader = std.Io.Reader.fixed(input);
 
   var result: i32 = 0;
   var pos: i32 = 50;
