@@ -18,7 +18,7 @@ test "part1_text" {
   try expectEqual(357, part1_text(test_input));
 }
 
-fn part1_text(input: []const u8) !i64 {
+pub fn part1_text(input: []const u8) !i64 {
   var total: i64 = 0;
 
   var reader = std.Io.Reader.fixed(input);
@@ -74,7 +74,7 @@ pub fn part2() !i64 {
   return part2_text(real_input);
 }
 
-fn part2_text(input: []const u8) !i64 {
+pub fn part2_text(input: []const u8) !i64 {
   var total: i64 = 0;
   var reader = std.Io.Reader.fixed(input);
   while (try reader.takeDelimiter('\n'))|line| {

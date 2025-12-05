@@ -34,7 +34,7 @@ fn getLines(arena: Allocator, input: []const u8) !std.ArrayList([]u8) {
   return lines_list;
 }
 
-fn part1_text(input: []const u8, allocator: Allocator) !i64 {
+pub fn part1_text(input: []const u8, allocator: Allocator) !i64 {
   var arena = std.heap.ArenaAllocator.init(allocator);
   defer arena.deinit();
 
@@ -82,15 +82,15 @@ fn getCount(lines: [][] u8, x: usize, y: usize) u8 {
 }
 
 pub fn part2(allocator: Allocator) !i64 {
-  return part2_test(real_input, allocator);
+  return part2_text(real_input, allocator);
 }
 
 test "part2" {
-  const result = try part2_test(test_input, std.testing.allocator);
+  const result = try part2_text(test_input, std.testing.allocator);
   try expectEql(43, result);
 }
 
-fn part2_test(input: []const u8, allocator: Allocator) !i64 {
+pub fn part2_text(input: []const u8, allocator: Allocator) !i64 {
 
   var arena = std.heap.ArenaAllocator.init(allocator);
   defer arena.deinit();

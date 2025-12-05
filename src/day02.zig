@@ -12,7 +12,7 @@ pub fn part1() !i64 {
   return part1_text(real_input);
 }
 
-fn part1_text(input: []const u8) !i64 {
+pub fn part1_text(input: []const u8) !i64 {
 
   var reader = std.Io.Reader.fixed(input);
   var invalid: i64 = 0;
@@ -71,7 +71,7 @@ pub fn part2() !i64 {
   return part2_text(real_input);
 }
 
-fn part2_text(input: []const u8) !i64 {
+pub fn part2_text(input: []const u8) !i64 {
 
   var reader = std.Io.Reader.fixed(input);
   var invalid: i64 = 0;

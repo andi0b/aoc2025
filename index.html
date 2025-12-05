@@ -8,15 +8,18 @@
     <div class="main">
       <h1>aoc2025 wasm</h1>
       <div id="c"></div>
-      <label>input:</label>
-      <textarea id="input"></textarea>
+      <div>
+        <label>input</label>
+        <button onclick="document.getElementById('input').value = ''">Clear</button>
+      </div>
+      <textarea id="input" placeholder="Paste your puzzle input here"></textarea>
     </div>
   </body>
 
   <script>
     const c = document.getElementById('c')
 
-    const createItem = (name, f) => {
+    const createItem = (name, f, memory) => {
       const d = document.createElement('div')
       d.className = 'export'
       c.appendChild(d)
@@ -39,17 +42,34 @@
 
       b.onclick = async _ => {
         const inputText = document.getElementById('input').value
-        r.value = await f()
+        r.value = ''
+
+        const memoryView = new Uint8Array(memory.buffer);
+        const encoder = new TextEncoder()
+        const result = encoder.encodeInto(inputText, memoryView);
+        const length = result.written
+        r.value = await f(0, length)
       }
     }
 
-    const loadWasm = async (file, imports) => WebAssembly.instantiateStreaming(fetch(file), { env: imports })
+    let wasm;
+    const imports = {
+      printNumber: (n) => console.log(`printNumber: ${n}`),
+      printString: (pointer, len) => {
+        const mem = wasm.instance.exports.memory
+        const slice = new Uint8Array(mem.buffer, pointer, len)
+        const s = new TextDecoder().decode(slice)
+        console.log(`printString: ${s}`)
+      }
+    }
 
-    loadWasm('wasm.wasm', {}).then(wasm => {
+    const loadWasm = async (file, imports) => wasm = await WebAssembly.instantiateStreaming(fetch(file), { env: imports })
+
+    loadWasm('wasm.wasm', imports).then(wasm => {
       for (let prop in wasm.instance.exports) {
         const f = wasm.instance.exports[prop]
         if (typeof f === 'function') {
-          createItem(prop, f)
+          createItem(prop, f, wasm.instance.exports.memory)
         }
       }
     })
@@ -86,7 +106,7 @@
       grid-auto-columns: min-content;
     }
     .export button {
-      min-width: 100px;
+      min-width: 120px;
     }
   </style>
 

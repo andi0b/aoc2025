@@ -63,7 +63,7 @@ pub fn part1(allocator: Allocator) !u64 {
   return part1_text(real_input, allocator);
 }
 
-fn part1_text(input: []const u8, allocator: Allocator) !u64 {
+pub fn part1_text(input: []const u8, allocator: Allocator) !u64 {
 
   var valid_count: u64 = 0;
 
@@ -107,7 +107,7 @@ test "part2" {
   try expectEql(14, result);
 }
 
-fn part2_text(input: []const u8, allocator: Allocator) !u64 {
+pub fn part2_text(input: []const u8, allocator: Allocator) !u64 {
 
   // create a list of disjunct ranges
   // by checking if a range overlaps with other ranges

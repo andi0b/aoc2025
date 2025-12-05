@@ -67,7 +67,7 @@ fn move_dial(pos: i32, instruction: Instruction) i32 {
   return @mod(new_pos, 100);
 }
 
-fn part1_text(input: []const u8) !i32 {
+pub fn part1_text(input: []const u8) !i32 {
 
   var reader = std.Io.Reader.fixed(input);
 
@@ -115,7 +115,7 @@ fn move_dial_step_by_step(pos: i32, instruction: Instruction) StepByStepResult {
   return .{ .inc = r, .pos = p };
 }
 
-fn part2_text(input: []const u8) !i32 {
+pub fn part2_text(input: []const u8) !i32 {
 
   var reader = std.Io.Reader.fixed(input);
 
